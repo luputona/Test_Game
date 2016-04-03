@@ -24,12 +24,14 @@ public class PlayerManager : MonoBehaviour {
 
     private float currStaminaTime;
     private float maxTime;
+    private int recoverStamina;
 
 	// Use this for initialization
 	void Start () {
 
-        maxTime = 300f;
-        currStaminaTime = 0f;
+        maxTime = 10f;
+        recoverStamina = 1;
+        currStaminaTime = maxTime;
 
 
         playerLevel = 1;
@@ -74,9 +76,26 @@ public class PlayerManager : MonoBehaviour {
     void StaminaTime()
     {
 
-        maxTime -= Time.deltaTime;
+        currStaminaTime  -= Time.deltaTime;
 
-        timeText.text = string.Format("{0} : {1:00}", (int)maxTime / 60, (int)maxTime % 60);
+        timeText.text = string.Format("{0} : {1:00}", (int)currStaminaTime / 60, (int)currStaminaTime % 60);
+
+
+        if (currStaminaTime <= 0)
+        {
+            currStaminaTime = maxTime + 1;
+            
+            if(PlayerState.getInstance.currentStamina < PlayerState.getInstance.playerMaxStamina)
+            {
+                recoverStamina = 1;
+                PlayerState.getInstance.currentStamina += recoverStamina;
+            }
+            else
+            {
+                recoverStamina = 0;
+            }
+        }
+
     }
 
     public void SetUseStamina(int _useStamina)

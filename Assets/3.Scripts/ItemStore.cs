@@ -20,11 +20,15 @@ public class ItemStore : MonoBehaviour {
     public List<Item> items = new List<Item>();
     public List<GameObject> slots = new List<GameObject>();
 
+    public StoreSlot itemList;
+
     
 	// Use this for initialization
 	void Start () 
     {
         database = GetComponent<ItemDatabase>();
+
+       
 
         slotAmount = 15;
 
@@ -42,8 +46,10 @@ public class ItemStore : MonoBehaviour {
 
         
         SellList(1);
+        SellList(0);
         SellList(1);
-        SellList(1);
+
+        //list();
         
 	}
 	
@@ -53,16 +59,31 @@ public class ItemStore : MonoBehaviour {
 	
 	}
 
+    public void list()
+    {        
+        if(itemList.id == 0)
+        {
+            storeItem.GetComponent<Image>().sprite = database.FetchItemByID(0).Sprite;
+            storeItem.name = database.FetchItemByID(0).Title;
+        }
+    }
 
     public void SellList(int id)
     {
         Item itemToAdd = database.FetchItemByID(id);
 
-
-        if(storeSlot.GetComponent<StoreSlot>().id == 0)
+        for (int i = 0; i < items.Count; i++ )
         {
-
+            if (items[i].ID == -1)
+            {
+                items[i] = itemToAdd;
+                
+                storeItem.GetComponent<Image>().sprite = itemToAdd.Sprite;
+                storeItem.name = itemToAdd.Title;
+                
+            }
         }
+            
 
     }
 

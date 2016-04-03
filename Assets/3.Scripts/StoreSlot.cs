@@ -3,8 +3,10 @@ using System.Collections;
 
 public class StoreSlot : MonoBehaviour {
 
+
     private ItemStore itemstore;
     public int id;
+    public Item item;
 
 	// Use this for initialization
 	void Start () 
