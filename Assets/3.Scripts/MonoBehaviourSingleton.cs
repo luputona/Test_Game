@@ -36,7 +36,6 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviourSi
             {
                 m_Instance.Init();
             }
-
             return m_Instance;
         }
     }

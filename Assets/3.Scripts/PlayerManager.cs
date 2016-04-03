@@ -37,6 +37,9 @@ public class PlayerManager : MonoBehaviour {
         playerTempLevel = playerLevel;
         playerMaxStamina = 30;
         currentStamina = playerMaxStamina;
+
+        PlayerState.getInstance.SetPlayerState(1,30,100);
+
         staminaSlider.value = currentStamina;
         expSlider.value = 0;
 
@@ -59,14 +62,13 @@ public class PlayerManager : MonoBehaviour {
 
     void PlayerStates()
     {
-        staminaSlider.maxValue = (float)playerMaxStamina;
-        staminaSlider.value = (float)currentStamina;
+        staminaSlider.maxValue = (float)PlayerState.getInstance.playerMaxStamina;
+        staminaSlider.value = (float)PlayerState.getInstance.currentStamina;
 
+        expText.text = string.Format("{0}/{1}", (int)PlayerState.getInstance.currentExp, (int)PlayerState.getInstance.maxExp);
+        staminaText.text = string.Format("{0}/{1}", PlayerState.getInstance.currentStamina, PlayerState.getInstance.playerMaxStamina);
 
-        expText.text = string.Format("{0}/{1}", (int)currentExp, (int)maxExp);
-        staminaText.text = currentStamina + "/" + playerMaxStamina;
-        
-        levelText.text = "" + playerLevel;
+        levelText.text = string.Format("{0}",PlayerState.getInstance.playerLevel);
     }
 
     void StaminaTime()
@@ -80,96 +82,95 @@ public class PlayerManager : MonoBehaviour {
     void Exp()
     {
         if (Input.GetKey(KeyCode.A))
-        {            
-            currentExp += 20;
-            expSlider.value = currentExp;
-            
-            Debug.Log("currentExp : " + currentExp);
+        {
+            PlayerState.getInstance.currentExp += 20;
+            expSlider.value = PlayerState.getInstance.currentExp;
+
+            Debug.Log("currentExp : " + PlayerState.getInstance.currentExp);
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            
-            staminaSlider.value = currentStamina;
 
-            if (currentStamina >= useStamina)
+            staminaSlider.value = PlayerState.getInstance.currentStamina;
+
+            if (PlayerState.getInstance.currentStamina >= useStamina)
             {
-                useStamina = 5;
-                currentStamina -= useStamina;
+                PlayerState.getInstance.currentStamina -= useStamina;
+                useStamina = 5;                
                 return;
-            }                
-            else if (currentStamina < useStamina)
+            }
+            else if (PlayerState.getInstance.currentStamina < useStamina)
             {
                 useStamina = 0;
-            }
-            
+            }           
             
         }
 
-        if (currentExp >= maxExp)
+        if (PlayerState.getInstance.currentExp >= PlayerState.getInstance.maxExp)
         {
-            playerTempLevel = playerLevel;
-            ++playerLevel;
+            PlayerState.getInstance.playerTempLevel = PlayerState.getInstance.playerLevel;
+            ++PlayerState.getInstance.playerLevel;
 
-            currentExp = 0;
-            Debug.Log("maxExpcurrentExp : " + currentExp);
-            if (playerLevel <= 10)
+            PlayerState.getInstance.currentExp = 0;
+            Debug.Log("maxExpcurrentExp : " + PlayerState.getInstance.currentExp);
+            if (PlayerState.getInstance.playerLevel <= 10)
             {
-                maxExp = (100 * playerLevel - maxExp * 60 / 100) + maxExp;
+                PlayerState.getInstance.maxExp = (100 * PlayerState.getInstance.playerLevel - PlayerState.getInstance.maxExp * 60 / 100) + PlayerState.getInstance.maxExp;
             }
-            else if (playerLevel > 10 && playerLevel <= 40)
+            else if (PlayerState.getInstance.playerLevel > 10 && PlayerState.getInstance.playerLevel <= 40)
             {
-                maxExp = (115 * playerLevel - maxExp * 45 / 100) + maxExp;
+                PlayerState.getInstance.maxExp = (115 * PlayerState.getInstance.playerLevel - PlayerState.getInstance.maxExp * 45 / 100) + PlayerState.getInstance.maxExp;
             }
-            else if (playerLevel > 40 && playerLevel <= 100)
+            else if (PlayerState.getInstance.playerLevel > 40 && PlayerState.getInstance.playerLevel <= 100)
             {
-                maxExp = (138 * playerLevel - maxExp * 40 / 100) + maxExp;
+                PlayerState.getInstance.maxExp = (138 * PlayerState.getInstance.playerLevel - PlayerState.getInstance.maxExp * 40 / 100) + PlayerState.getInstance.maxExp;
             }
         }
-        if (playerLevel > playerTempLevel)
+        if (PlayerState.getInstance.playerLevel > PlayerState.getInstance.playerTempLevel)
         {
-            playerMaxStamina += 2;
-            staminaSlider.value = playerMaxStamina;
-            currentStamina = playerMaxStamina;
+            PlayerState.getInstance.playerMaxStamina += 2;
+            staminaSlider.value = PlayerState.getInstance.playerMaxStamina;
+            PlayerState.getInstance.currentStamina = PlayerState.getInstance.playerMaxStamina;
 
-            expSlider.maxValue = maxExp;
+            expSlider.maxValue = PlayerState.getInstance.maxExp;
             expSlider.value = 0;
 
-            ++playerTempLevel;
+            ++PlayerState.getInstance.playerTempLevel;
         }
 
-        Debug.Log("playerLevel : " + playerLevel);
+        Debug.Log("playerLevel : " + PlayerState.getInstance.playerLevel);
     }
 
 
-    void ExpTable()
-    {
-        if (playerLevel <= 10)
-        {
-            for (; playerLevel <= 10; playerLevel++)
-            {
-                maxExp = (100 * playerLevel - maxExp * 60 / 100) + maxExp;
-                Debug.Log(playerLevel + " : " + (int)maxExp);         
-            }
-        }
-        if (playerLevel > 10 && playerLevel <= 40)
-        {
-            for (; playerLevel <= 40; playerLevel++)
-            {
-                maxExp = (115 * playerLevel - maxExp * 45 / 100) + maxExp;
-                Debug.Log(playerLevel + " : " + (int)maxExp);   
+    //void ExpTable()
+    //{
+    //    if (playerLevel <= 10)
+    //    {
+    //        for (; playerLevel <= 10; playerLevel++)
+    //        {
+    //            maxExp = (100 * playerLevel - maxExp * 60 / 100) + maxExp;
+    //            Debug.Log(playerLevel + " : " + (int)maxExp);         
+    //        }
+    //    }
+    //    if (playerLevel > 10 && playerLevel <= 40)
+    //    {
+    //        for (; playerLevel <= 40; playerLevel++)
+    //        {
+    //            maxExp = (115 * playerLevel - maxExp * 45 / 100) + maxExp;
+    //            Debug.Log(playerLevel + " : " + (int)maxExp);   
 
-            }
-        }
-        if (playerLevel > 40 && playerLevel <= 100)
-        {
-            for (; playerLevel <= 100; playerLevel++)
-            {
-                maxExp = (138 * playerLevel - maxExp * 40 / 100) + maxExp;
-                Debug.Log(playerLevel + " : " + (int)maxExp);
-            }
-        }
-    }
+    //        }
+    //    }
+    //    if (playerLevel > 40 && playerLevel <= 100)
+    //    {
+    //        for (; playerLevel <= 100; playerLevel++)
+    //        {
+    //            maxExp = (138 * playerLevel - maxExp * 40 / 100) + maxExp;
+    //            Debug.Log(playerLevel + " : " + (int)maxExp);
+    //        }
+    //    }
+    //}
 }
 
 public class PlayerState : Singleton_OBJ<PlayerState>
