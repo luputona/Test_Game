@@ -79,6 +79,17 @@ public class PlayerManager : MonoBehaviour {
         timeText.text = string.Format("{0} : {1:00}", (int)maxTime / 60, (int)maxTime % 60);
     }
 
+    public void SetUseStamina(int _useStamina)
+    {
+        PlayerState.getInstance.useStamina = _useStamina;
+    }
+
+    public int GetUseStamina()
+    {
+        return PlayerState.getInstance.useStamina;
+    }
+
+
     void Exp()
     {
         if (Input.GetKey(KeyCode.A))
