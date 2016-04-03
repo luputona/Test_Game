@@ -20,11 +20,16 @@ public class PlayerManager : MonoBehaviour {
     public Text expText;
     public Text levelText;
 
+    public Text timeText;
 
+    private float currStaminaTime;
+    private float maxTime;
 
 	// Use this for initialization
 	void Start () {
 
+        maxTime = 300f;
+        currStaminaTime = 0f;
 
 
         playerLevel = 1;
@@ -49,6 +54,7 @@ public class PlayerManager : MonoBehaviour {
 
         Exp();
         PlayerStates();
+        StaminaTime();
 	}
 
     void PlayerStates()
@@ -61,6 +67,14 @@ public class PlayerManager : MonoBehaviour {
         staminaText.text = currentStamina + "/" + playerMaxStamina;
         
         levelText.text = "" + playerLevel;
+    }
+
+    void StaminaTime()
+    {
+
+        maxTime -= Time.deltaTime;
+
+        timeText.text = string.Format("{0} : {1:00}", (int)maxTime / 60, (int)maxTime % 60);
     }
 
     void Exp()
