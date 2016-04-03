@@ -34,8 +34,8 @@ public class AreaManager : MonoBehaviour {
 
     public void Button()
     {
-        //playerMgr.SetUseStamina(useStamina);
-       // playerMgr.UseStamina();
+        playerMgr.SetUseStamina(useStamina);
+        playerMgr.GetUseStamina();
     }
 
     

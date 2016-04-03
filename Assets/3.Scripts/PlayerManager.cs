@@ -84,14 +84,28 @@ public class PlayerManager : MonoBehaviour {
         PlayerState.getInstance.useStamina = _useStamina;
     }
 
-    public int GetUseStamina()
+    public void GetUseStamina()
     {
-        return PlayerState.getInstance.useStamina;
+        staminaSlider.value = PlayerState.getInstance.currentStamina;
+
+        if (PlayerState.getInstance.currentStamina >= PlayerState.getInstance.useStamina)
+        {
+            PlayerState.getInstance.currentStamina -= PlayerState.getInstance.useStamina;
+            PlayerState.getInstance.useStamina = 5;
+            return;
+        }
+        else if (PlayerState.getInstance.currentStamina < PlayerState.getInstance.useStamina)
+        {
+            PlayerState.getInstance.useStamina = 0;
+        }
+
+        
     }
 
 
     void Exp()
     {
+        //Exp and Stamina Test Code
         if (Input.GetKey(KeyCode.A))
         {
             PlayerState.getInstance.currentExp += 20;
